@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Forms</title>
+
+    {{> css}}
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- HEADER MOBILE-->
+        {{> header_mobile}}
+        <!-- END HEADER MOBILE-->
+
+        <!-- MENU SIDEBAR-->
+        {{> sidebar}}
+        <!-- END MENU SIDEBAR-->
+
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            {{> header_desktop}}
+            <!-- HEADER DESKTOP-->
+
+            <!-- MAIN CONTENT-->
+            <div class="main-content">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                            {{#if alertMessage}}
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    <strong>{{alertMessage}}</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                            {{/if}}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">Departments</div>
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h3 class="text-center title-2">Add Department</h3>
+                                        </div>
+                                        <hr>
+                                        <form action="/admin/departments/add" method="post" novalidate="novalidate">
+                                            <div class="form-group has-success">
+                                                <label for="name" class="control-label mb-1">Depatment Name</label>
+                                                <input id="name" name="short_name" type="text" class="form-control valid" placeholder="Enter short name of the department">
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="select" class=" form-control-label">Select Faculty</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select name="faculty_id" id="faculty_id" class="form-control">
+                                                        <option>Please select faculty</option>
+                                                        {{#each faculties}}
+                                                            <option value="{{id}}">{{short_name}}</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <button id="button" type="submit" class="btn btn-lg btn-info btn-block">ADD</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{> footer}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{{> js}}
+
+</body>
+
+</html>
+<!-- end document-->
