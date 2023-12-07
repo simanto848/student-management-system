@@ -1,6 +1,6 @@
-const DepartmentService = require("../services/DepatmentService");
-const FacultyService = require("../services/FacultyService");
-const setAlert = require("../services/AlertService");
+const DepartmentService = require("../../services/DepatmentService");
+const FacultyService = require("../../services/FacultyService");
+const setAlert = require("../../services/AlertService");
 
 const index = async (req, res) => {
     try {

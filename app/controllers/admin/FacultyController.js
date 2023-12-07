@@ -1,4 +1,4 @@
-const FacultyService = require("../services/FacultyService");
+const FacultyService = require("../../services/FacultyService");
 const swal = require('sweetalert');
 
 const index = async (req, res) => {

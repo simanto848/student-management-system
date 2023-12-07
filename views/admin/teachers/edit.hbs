@@ -53,32 +53,23 @@
                                             <h3 class="text-center title-2">Add Teacher</h3>
                                         </div>
                                         <hr>
-                                        <form action="/admin/teachers/add" method="post" novalidate="novalidate">
+                                        {{#each teachers}}
+                                        <form action="/admin/teachers/edit/{{id}}" method="post" novalidate="novalidate">
                                             <div class="form-group has-success">
                                                 <label for="name" class="control-label mb-1">Name</label>
-                                                <input id="name" name="name" type="text" class="form-control valid" placeholder="Enter name...">
+                                                <input id="name" name="name" type="text" class="form-control valid" value="{{name}}">
                                             </div>
                                             <div class="form-group has-success">
                                                 <label for="name" class="control-label mb-1">Email</label>
-                                                <input id="email" name="email" type="email" class="form-control valid" placeholder="Enter email...">
+                                                <input id="email" name="email" type="email" class="form-control valid" value="{{email}}">
                                             </div>
-                                            <div class="form-group has-success">
-                                                <label for="name" class="control-label mb-1">Password</label>
-                                                <div class="input-group">
-                                                    <input id="password" name="password" type="text" class="form-control valid" placeholder="Enter password...">
-                                                    <div class="input-group-append">
-                                                        <button id="generatePassword" type="button" class="btn btn-secondary">Generate</button>
-                                                    </div>
-                                                </div>
-                                                <small class="form-text text-muted">Click "Generate" for a suggested password.</small>
-                                            </div>
+                                        {{/each}}
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
                                                     <label for="select" class=" form-control-label">Select Faculty</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <select name="faculty_id" id="faculty_id" class="form-control">
-                                                        <option>Please select faculty</option>
                                                         {{#each faculties}}
                                                             <option value="{{id}}">{{short_name}}</option>
                                                         {{/each}}
@@ -91,7 +82,6 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <select name="department_id" id="department_id" class="form-control">
-                                                        <option>Please select department</option>
                                                         {{#each departments}}
                                                             <option value="{{id}}">{{short_name}}</option>
                                                         {{/each}}
@@ -104,7 +94,6 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <select name="role" id="role" class="form-control">
-                                                        <option>Please select designation</option>
                                                         {{#each teacher_rolls}}
                                                             {{!-- <option value="{{[this]}}">{{@key}}</option> --}}
                                                             <option class="text-uppercase" value="{{@key}}">{{@key}}</option>
@@ -126,30 +115,6 @@
     </div>
 
 {{> js}}
-{{!-- Generating Random Password --}}
-<script>
-    function generateRandomPassword(length) {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-=_+';
-        let result = '';
-        for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-        return result;
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const passwordInput = document.getElementById('password');
-        const generatePasswordButton = document.getElementById('generatePassword');
-
-        // Function to set a random password in the input field
-        function setRandomPassword() {
-            passwordInput.value = generateRandomPassword(8);
-        }
-
-        // Add an event listener to the button to generate a new random password
-        generatePasswordButton.addEventListener('click', setRandomPassword);
-    });
-</script>
 
 </body>
 

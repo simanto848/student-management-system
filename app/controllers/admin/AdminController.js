@@ -1,4 +1,4 @@
-const AdminService = require("../services/AdminService");
+const AdminService = require("../../services/AdminService");
 
 const index = (req, res) => {
     const message = req.flash("message");

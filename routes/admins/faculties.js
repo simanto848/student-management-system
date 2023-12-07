@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { index, create, store, edit, update, destroy } = require("../../app/controllers/FacultyController");
+const { index, create, store, edit, update, destroy } = require("../../app/controllers/admin/FacultyController");
 
 router.get("/", index);
 router.get("/add", create);
