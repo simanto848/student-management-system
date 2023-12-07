@@ -106,6 +106,24 @@
     </div>
 
 {{> js}}
+{{!-- Generating Random Password --}}
+<script>
+    function generateRandomPassword(length) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-=_+';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const passwordInput = document.getElementById('password');
+
+        // Generate a random password when the page loads
+        passwordInput.value = generateRandomPassword(8);
+    });
+</script>
 
 </body>
 
