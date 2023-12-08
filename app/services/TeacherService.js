@@ -1,7 +1,9 @@
 const db = require("../../config/dbConfig");
 const CrudService = require("./CrudService");
+const { generateRandomString } = require("../helpers/string");
 const bcrypt = require("bcrypt");
 const { success, error } = require("./ResponseService");
+const MailSender = require("../helpers/SendMail");
 
 // SQL = SELECT teachers.id, teachers.name, teachers.email, teachers.password, faculties.short_name AS 'faculty_name', departments.short_name AS 'department_name' FROM teachers INNER JOIN faculties ON teachers.faculty_id = faculties.id INNER JOIN departments ON teachers.department_id = departments.id AND teachers.faculty_id = departments.faculty_id;
 const getAll = async () => {
@@ -13,13 +15,15 @@ const getByKeyword = async (id) => {
 }
 
 const store = async (payload) => {
-    const hashedPassword = await bcrypt.hash(payload.password, 10);
+    let password = generateRandomString(8)
+    const hashedPassword = await bcrypt.hash(password, 10);
     payload.password = hashedPassword;
     return new Promise((resolve, reject) => {
         db.query(`INSERT INTO teachers set ?`, payload, (err, result) => {
             if (err) {
                 reject(error(err));
             }
+            MailSender.mail(payload.email, password);
             resolve(success("Successfully stored", result));
         });
     });

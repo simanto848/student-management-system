@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer")
 
-const mail = async function (email){
+const mail = async function (email, password){
     const transporter  = nodemailer.createTransport({
         host: process.env.MAIL_HOST,
         port: process.env.MAIL_PORT,
@@ -14,16 +14,16 @@ const mail = async function (email){
         from: process.env.MAIL_FROM, // Sender address
         to: email,         // List of recipients
         subject: 'Activate Account', // Subject line
-        html: `<i>To activate your account please enter this code: <a href="http://localhost:${process.env.PORT}/user/login}">Log into yout account</a></i>` // Plain text body
+        html: `<i>To login into your account use this password: ${password}</a></i>` // Plain text body
     };
 
     await transporter.sendMail(message, function (err, info){
         if (err) {
-            console.log("Failed")
+            return false
         } else {
             return email
         }
     })
 }
 
-module.exports = mail
+module.exports = { mail }

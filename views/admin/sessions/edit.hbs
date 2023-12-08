@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Forms</title>
+
+    {{> css}}
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- HEADER MOBILE-->
+        {{> header_mobile}}
+        <!-- END HEADER MOBILE-->
+
+        <!-- MENU SIDEBAR-->
+        {{> sidebar}}
+        <!-- END MENU SIDEBAR-->
+
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            {{> header_desktop}}
+            <!-- HEADER DESKTOP-->
+
+            <!-- MAIN CONTENT-->
+            <div class="main-content">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                            {{#if alertMessage}}
+                                <div class="alert alert-info" role="alert">
+                                    {{alertMessage}}
+                                </div>
+                            {{/if}}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">Sessions</div>
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h3 class="text-center title-2">Update Session</h3>
+                                        </div>
+                                        <hr>
+                                        {{#if sessionResult}}
+                                        <form action="/admin/sessions/edit/{{sessionResult.id}}" method="post" novalidate="novalidate">
+                                            <div class="form-group has-success">
+                                                <label for="session" class="control-label mb-1">Session</label>
+                                                <input id="session" name="session" type="text" class="form-control valid" value="{{sessionResult.session}}">
+                                            </div>
+                                            <div class="form-group has-success">
+                                                <label for="batch_no" class="control-label mb-1">Batch No</label>
+                                                <input id="batch_no" name="batch_no" type="text" class="form-control valid" value="{{sessionResult.batch_no}}">
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="select" class=" form-control-label">Select Session</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select name="semester" id="semester" class="form-control">
+                                                        <option class="text-uppercase" value="{{sessionResult.semester}}">{{sessionResult.semester}}</option>
+                                                        {{#each semester}}
+                                                            <option class="text-uppercase" value="{{value}}">{{title}}</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <button id="button" type="submit" class="btn btn-lg btn-info btn-block">Update</button>
+                                            </div>
+                                        </form>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{> footer}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{{> js}}
+
+</body>
+
+</html>
+<!-- end document-->

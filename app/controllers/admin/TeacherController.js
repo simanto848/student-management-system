@@ -13,20 +13,19 @@ const index = async (req, res) => {
 }
 
 const create = async (req, res) => {
-    const payload = req.body;
-    const { success, message, data } = await FacultyService.getAll();
+    const { success, data } = await FacultyService.getAll();
     const departments =  await DepartmentService.getAll();
     res.render("admin/teachers/create",{faculties: success ? data: [], departments: departments.data, teacher_rolls: TEACHER_ROLE, alertMessage: req.flash('message')})
 };
 
 const store = async (req, res) => {
     try {
-        const payload = { name, email, password, faculty_id, department_id, role } = req.body;
+        const payload = { name, email, faculty_id, department_id, role } = req.body;
         const { success, message, data } = await TeacherService.store(payload);
         req.flash('message', message);
         return res.redirect("/admin/teachers/add");
     } catch (error) {
-        console.log("In error", error);
+        console.log("In error", error.message);
         req.flash('message', error.message);
         return res.redirect("/admin/teachers/add");
     }

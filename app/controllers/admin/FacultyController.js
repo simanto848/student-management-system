@@ -53,6 +53,20 @@ const destroy = async (req, res) => {
     }
 };
 
+const getDepartments = async (req, res) => {
+    const { id } = req.params;
+    try{
+        const response = await FacultyService.getDepartments(id);
+        return res.send(response);
+    } catch (error) {
+        return res.send({
+            success: false,
+            message: 'Failed to retrieve',
+            data: null
+        });
+    }
+};
+
 
 module.exports = {
     index,
@@ -60,5 +74,6 @@ module.exports = {
     store,
     edit,
     update,
-    destroy
+    destroy,
+    getDepartments
 };
