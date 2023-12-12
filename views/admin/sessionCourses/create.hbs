@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Add Course</title>
+    <title>Add Session Courses</title>
 
     {{> css}}
 
@@ -47,31 +47,32 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-header">Courses</div>
+                                    <div class="card-header">Session Courses</div>
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h3 class="text-center title-2">Add Course</h3>
+                                            <h3 class="text-center title-2">Add Session Courses</h3>
                                         </div>
                                         <hr>
-                                        <form action="/admin/courses/add" method="post" novalidate="novalidate">
-                                            <div class="form-group has-success">
-                                                <label for="title" class="control-label mb-1">Course Title</label>
-                                                <input id="title" name="title" type="text" class="form-control valid" placeholder="Enter title of the course ...">
-                                            </div>
-                                            <div class="form-group has-success">
-                                                <label for="code" class="control-label mb-1">Course Code</label>
-                                                <input id="code" name="code" type="text" class="form-control valid" placeholder="Enter course code ...">
-                                            </div>
-                                            <div class="form-group has-success">
-                                                <label for="semester" class="control-label mb-1">Semester</label>
-                                                <input id="semester" name="semester" type="text" class="form-control valid" placeholder="Enter semester ...">
+                                        <form action="/admin/session-courses/add" method="post" novalidate="novalidate">
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="select" class=" form-control-label">Select Session</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select name="session_id" id="session_id" class="form-control">
+                                                        <option>Please select session</option>
+                                                        {{#each sessions}}
+                                                            <option class="text-uppercase" value="{{id}}">{{session}} ({{semester}})</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
                                                     <label for="select" class=" form-control-label">Select Department</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <select name="department_id" id="department_id" class="form-control">
+                                                    <select onchange="getCourses(this)"  id="department_id" class="form-control">
                                                         <option>Please select department</option>
                                                         {{#each departments}}
                                                             <option value="{{id}}">{{short_name}}</option>
@@ -79,18 +80,8 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="select" class=" form-control-label">Maintainable</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select name="maintainable" id="maintainable" class="form-control">
-                                                        <option>Please select</option>
-                                                        {{#each MAINTAINABLE}}
-                                                            <option value="{{this}}">{{@key}}</option>
-                                                        {{/each}}
-                                                    </select>
-                                                </div>
+                                            <div class="from-group px-4" id="course_checkboxes">
+                                                
                                             </div>
                                             <div>
                                                 <button id="button" type="submit" class="btn btn-lg btn-info btn-block">ADD</button>
@@ -109,8 +100,30 @@
     </div>
 
 {{> js}}
+<script>
+    async function getCourses(e) {
+        const checkboxContainer  = document.getElementById('course_checkboxes');
+        checkboxContainer.innerHTML = null;
+        const response = await fetch(`/admin/departments/${e.value}/courses`);
+        const { success, message, data } = await response.json();
+        if(!success) {
+            alert(message)
+        } else {
+            data.forEach(item => {
+                const checkboxDiv = generateCheckBoxHtml(item);
+                checkboxContainer.appendChild(checkboxDiv);
+            });
+        }
+    }
+
+    function generateCheckBoxHtml(item){
+        var checkboxDiv = document.createElement('div');
+        checkboxDiv.innerHTML = `<input class="form-check-input mb-2" type="checkbox" name="course_id[]" id="flexCheckChecked${item.id}" value="${item.id}" checked>
+                    <label class="form-check-label" for="flexCheckChecked${item.id}">${item.title}</label>`;
+        return checkboxDiv
+    }
+</script>
 
 </body>
-
 </html>
 <!-- end document-->

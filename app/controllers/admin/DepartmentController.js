@@ -74,11 +74,26 @@ const destroy = async (req, res) => {
     }
 };
 
+const getDepartmentCourses = async (req, res) => {
+    const { id } = req.params;
+    try{
+        const response = await DepartmentService.getDepartmentCourses(id);
+        return res.send(response);
+    } catch (error) {
+        return res.send({
+            success: false,
+            message: 'Failed to retrieve',
+            data: null
+        });
+    }
+};
+
 module.exports = {
     index,
     create,
     store,
     edit,
     update,
-    destroy
+    destroy,
+    getDepartmentCourses
 };

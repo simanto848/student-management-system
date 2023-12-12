@@ -62,11 +62,26 @@ const destroy = (req, res) => {
     }
 }
 
+const getCourses = async (req, res) => {
+    const { id } = req.params;
+    try{
+        const response = await SessionService.getCourses(id);
+        return res.send(response);
+    } catch (error) {
+        return res.send({
+            success: false,
+            message: 'Failed to retrieve',
+            data: null
+        });
+    }
+};
+
 module.exports = {
     index,
     create,
     store,
     edit,
     update,
-    destroy
+    destroy,
+    getCourses
 }

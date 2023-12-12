@@ -9,7 +9,7 @@
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
 
-    {{> css}}
+    <%- include('common/css.ejs')%>
     <!-- Title Page-->
     <title>Dashboard</title>
 </head>
@@ -25,10 +25,10 @@
                                 <h2>Student Management System</h2>
                             </a>
                         </div>
-                        {{#if alertMessage}}
-                            <div class="alert alert-danger" role="alert">
-                            {{alertMessage}}
-                        {{/if}}
+<!--                        {{#if alertMessage}}-->
+<!--                            <div class="alert alert-danger" role="alert">-->
+<!--                            {{alertMessage}}-->
+<!--                        {{/if}}-->
                         <div class="login-form">
                             <form action="/" method="post">
                                 <div class="form-group">
@@ -60,9 +60,9 @@
                 </div>
             </div>
         </div>
-
+        </div>
     </div>
-    {{> js}}
+    <%- include('common/js.ejs')%>
 </body>
 
 </html>

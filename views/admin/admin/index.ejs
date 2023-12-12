@@ -9,7 +9,7 @@
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
 
-    {{> css}}
+    <%- include('../../common/css.ejs') %>
     <!-- Title Page-->
     <title>Login</title>
 
@@ -26,10 +26,11 @@
                                 <h2>Student Management System</h2>
                             </a>
                         </div>
-                        {{#if alertMessage}}
+                        <% if(alertMessage){ %>
                             <div class="alert alert-danger" role="alert">
-                            {{alertMessage}}
-                        {{/if}}
+                                <%= alertMessage %>
+                            </div>
+                        <% } %>
                         <div class="login-form">
                             <form action="/admin" method="post">
                                 <div class="form-group">
@@ -64,7 +65,7 @@
 
     </div>
     
-{{> js}}
+<%- include ('../../common/js.ejs') %>
 </body>
 
 </html>

@@ -1,0 +1,155 @@
+j<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Session Course</title>
+
+    {{> css}}
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- HEADER MOBILE-->
+        {{> header_mobile}}
+        <!-- END HEADER MOBILE-->
+
+        <!-- MENU SIDEBAR-->
+        {{> sidebar}}
+        <!-- END MENU SIDEBAR-->
+
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            {{> header_desktop}}
+            <!-- END HEADER DESKTOP-->
+
+            <!-- MAIN CONTENT-->
+            <div class="main-content">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- DATA TABLE -->
+                                <div class="table-data__tool-right float-right">
+                                    <a href="/admin/session-courses/add">
+                                        <button class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                        <i class="zmdi zmdi-plus"></i>Add Session Course</button>
+                                    </a>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Select Session</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select onchange="getCoursesBySession(this)"  id="session_id" class="form-control">
+                                            <option>Please select session</option>
+                                            {{#each sessions}}
+                                                <option value="{{id}}">{{session}} {{semester}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="table-responsive table-responsive-data2">
+                                    <table class="table table-data2">
+                                        <thead>
+                                            <tr>
+                                                <th>SL</th>
+                                                <th>Course Code</th>
+                                                <th>Course Title</th>
+                                                <th>Credit Hour</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_body_container">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- END DATA TABLE -->
+                            </div>
+                        </div>
+                        {{> footer}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {{> js}}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select all delete buttons by class
+            const deleteButtons = document.querySelectorAll(".delete-course-btn");
+
+            // Add a click event listener to each delete button
+            deleteButtons.forEach(button => {
+                button.addEventListener("click", async function () {
+                    // Get the faculty ID from the button's data-faculty-id attribute
+                    const courseId = button.getAttribute("data-course-id");
+
+                    // Show SweetAlert confirmation
+                    const result = await swal("Are you sure you want to delete this?", {
+                        buttons: ["Cancel", true],
+                    });
+
+                    // If the user clicks "OK" in the SweetAlert confirmation
+                    if (result) {
+                        // Perform the deletion by redirecting to the delete route
+                        window.location.href = `/admin/courses/delete/${courseId}`;
+                    }
+                });
+            });
+        });
+
+        async function getCoursesBySession(e) {
+            const tableContainer = document.getElementById('table_body_container');
+            tableContainer.innerHTML = null;
+            const response = await fetch(`/admin/sessions/${e.value}/courses`);
+            const { success, message, data } = await response.json();
+            if(!success) {
+                alert(message)
+            } else {
+                data.forEach((item, index) => {
+                    const trElement = appendTableRow(index, item);
+                    tableContainer.appendChild(trElement);
+                });
+            }
+        }
+
+        function appendTableRow(index, item) {
+            var trElement = document.createElement('tr');
+            trElement.innerHTML = `<td>${index + 1}</td>
+                                <td>${item.course_code}</td>
+                                <td>${item.course_title}</td>
+                                <td>${item.credit_hour}</td>
+                                <td>
+                                    <div class="table-data-feature">
+                                        <a href="/admin/courses/edit/${item.id}">
+                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                <i class="zmdi zmdi-edit"></i>
+                                            </button>
+                                        </a>
+                                        <button class="item ml-2 delete-course-btn" data-toggle="tooltip" data-placement="top" title="Delete" data-course-id="${item.id}">
+                                            <i class="zmdi zmdi-delete"></i>
+                                        </button>
+                                    </div>
+                                </td>`
+            return trElement
+        }
+    </script>
+
+</body>
+
+</html>
+<!-- end document-->

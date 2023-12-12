@@ -13,6 +13,7 @@ const simpleGetAll = (tableName) => {
     });
 }
 
+
 const getAllByJoin = (query) => {
     return new Promise((resolve, reject) => {
         db.query(`${query}`, (err, result) => {

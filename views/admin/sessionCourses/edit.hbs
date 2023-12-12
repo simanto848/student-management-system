@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Add Session Courses</title>
+
+    {{> css}}
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- HEADER MOBILE-->
+        {{> header_mobile}}
+        <!-- END HEADER MOBILE-->
+
+        <!-- MENU SIDEBAR-->
+        {{> sidebar}}
+        <!-- END MENU SIDEBAR-->
+
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            {{> header_desktop}}
+            <!-- HEADER DESKTOP-->
+
+            <!-- MAIN CONTENT-->
+            <div class="main-content">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                            {{#if alertMessage}}
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    <strong>{{alertMessage}}</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                            {{/if}}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">Session Courses</div>
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h3 class="text-center title-2">Add Session Courses</h3>
+                                        </div>
+                                        <hr>
+                                        <form action="/admin/session-courses/add" method="post" novalidate="novalidate">
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="select" class=" form-control-label">Select Session</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select name="session_id" id="session_id" class="form-control">
+                                                        <option>Please select session</option>
+                                                        {{#each sessions}}
+                                                            <option class="text-uppercase" value="{{id}}">{{session}} ({{semester}})</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="select" class=" form-control-label">Select Department</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select onchange="getDepartments(this)"  id="department_id" class="form-control">
+                                                        <option>Please select department</option>
+                                                        {{#each departments}}
+                                                            <option value="{{id}}">{{short_name}}</option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="from-group" id="course_checkboxes">
+                                                <div class="form-check" style="margin-left: 15px;">
+                                                    <input class="form-check-input mb-2" type="checkbox" name="course_id[]" id="flexCheckChecked{{id}}" value="{{id}}" checked>
+                                                    <label class="form-check-label" for="flexCheckChecked{{id}}">{{title}}</label>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <button id="button" type="submit" class="btn btn-lg btn-info btn-block">ADD</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{> footer}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{{> js}}
+<script>
+    async function getDepartments(e) {
+        const checkboxContainer  = document.getElementById('course_checkboxes');
+        checkboxContainer .innerHTML = null;
+        const response = await fetch(`/admin/departments/${e.value}/courses`);
+        const { success, message, data } = await response.json();
+        if(!success) {
+            alert(message)
+        } else {
+            data.forEach(item => {
+                const checkboxDiv = document.createElement('div');
+                checkboxDiv.classList.add('form-check');
+
+                const checkbox = document.createElement('input');
+                checkbox.classList.add('form-check-input');
+                checkbox.type = 'checkbox';
+                checkbox.id = 'courseCheckbox' + item.id;
+                checkbox.value = item.id;
+                checkbox.checked = true;
+
+                const label = document.createElement('label');
+                label.classList.add('form-check-label');
+                label.setAttribute('for', 'courseCheckbox' + item.id);
+                label.innerText = item.title;
+
+                checkboxDiv.appendChild(checkbox);
+                checkboxDiv.appendChild(label);
+                checkboxContainer.appendChild(checkboxDiv);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
+<!-- end document-->

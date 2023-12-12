@@ -96,8 +96,7 @@
                                                     <select name="role" id="role" class="form-control">
                                                         <option>Please select Role</option>
                                                         {{#each teacher_rolls}}
-                                                            {{!-- <option value="{{[this]}}">{{@key}}</option> --}}
-                                                            <option class="text-uppercase" value="{{value}}">{{title}}</option>
+                                                            <option class="text-uppercase" value="{{title}}">{{title}}</option>
                                                         {{/each}}
                                                     </select>
                                                 </div>
@@ -140,7 +139,6 @@
             })
         }
     }
-    console.log("Hello")
 </script>
 </html>
 <!-- end document-->

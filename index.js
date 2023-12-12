@@ -3,9 +3,10 @@ const express = require("express");
 const fileUpload = require("express-fileupload");
 const expressSession = require("express-session");
 const logger = require("morgan");
-const hbs = require("hbs");
+const ejs = require("ejs");
 const flash = require("connect-flash")
-const app = express();
+const moment = require("moment");
+app = express();
 require("dotenv").config();
 const routes = require("./routes/index");
 
@@ -20,11 +21,18 @@ app.use(expressSession({
     }
 }));
 
+// Moment
+app.use((req, res, next)=>{
+    res.locals.moment = moment;
+    next();
+});
+
 // Static Files
-app.use(express.static('public'));
-app.set('view engine', 'hbs');
-hbs.registerPartials(__dirname + "/views/partials", function(err){});
-hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+// app.set('view engine', 'hbs');
+// hbs.registerPartials(__dirname + "/views/partials", function(err){});
+// hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
 
 // Middleware
 app.use(express.json());
