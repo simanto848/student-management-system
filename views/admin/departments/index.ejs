@@ -10,26 +10,26 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Tables</title>
+    <title>Departments</title>
 
-    {{> css}}
+    <%- include ('../../common/css.ejs') %>
 
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
-        {{> header_mobile}}
+        <%- include ('../../common/header_mobile.ejs') %>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        {{> sidebar}}
+        <%- include ('../../common/sidebar.ejs') %>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            {{> header_desktop}}
+            <%- include ('../../common/header_desktop.ejs') %>
             <!-- END HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
@@ -39,51 +39,57 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <!-- DATA TABLE -->
-                                <h3 class="title-5 m-b-35">Departments</h3>
+                                <h3 class="title-5 m-b-35">Department List</h3>
                                 <div class="table-data__tool float-right">
                                     <a href="/admin/departments/add">
                                         <button class="au-btn au-btn-icon au-btn--green au-btn--small">
                                         <i class="zmdi zmdi-plus"></i>Add Department</button>
                                     </a>
                                 </div>
-                                <div class="table-responsive table-responsive-data2">
+                                <div class="table-responsive table-responsive-data2 text-center">
                                     <table class="table table-data2">
                                         <thead>
                                             <tr>
                                                 <th>Department Name</th>
                                                 <th>Faculty Name</th>
                                                 <th>Created At</th>
-                                                <th></th>
+                                                <th class="text-center">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{#each faculties}}
-                                            <tr class="tr-shadow">
-                                                <td> {{short_name}} </td>
-                                                <td> {{faculty_name}} </td>
-                                                <td>{{dateFormat created_at "DD-MM-Y"}}</td>
-                                                <td>
-                                                    <div class="table-data-feature">
-                                                        <a href="/admin/departments/edit/{{id}}">
-                                                            <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                                <i class="zmdi zmdi-edit"></i>
+                                            <% if (faculties.length > 0) { %>
+                                                <% for (let faculty of faculties){ %>
+                                                <tr class="tr-shadow">
+                                                    <td> <%= faculty.short_name %></td>
+                                                    <td> <%= faculty.faculty_name %> </td>
+                                                    <td> <%= moment(faculty.created_at).format("DD-MM-Y") %></td>
+                                                    <td>
+                                                        <div class="table-data-feature">
+                                                            <a href="/admin/departments/edit/<%= faculty.id %>">
+                                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                                    <i class="zmdi zmdi-edit"></i>
+                                                                </button>
+                                                            </a>
+                                                            <button class="item ml-2 delete-department-btn" data-toggle="tooltip" data-placement="top" title="Delete" data-department-id="<%= faculty.id%>">
+                                                                <i class="zmdi zmdi-delete"></i>
                                                             </button>
-                                                        </a>
-                                                        <button class="item ml-2 delete-department-btn" data-toggle="tooltip" data-placement="top" title="Delete" data-department-id="{{id}}">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="spacer"></tr>
-                                            {{/each}}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="spacer"></tr>
+                                                <% }%>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="4" class="text-center">No departments found</td>
+                                                </tr>
+                                            <% } %>
                                         </tbody>
                                     </table>
                                 </div>
                                 <!-- END DATA TABLE -->
                             </div>
                         </div>
-                        {{> footer}}
+                        <%- include ('../../common/footer.ejs') %>
                     </div>
                 </div>
             </div>
@@ -91,7 +97,7 @@
 
     </div>
 
-    {{> js}}
+    <%- include ('../../common/js.ejs') %>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

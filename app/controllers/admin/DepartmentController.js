@@ -1,6 +1,7 @@
 const DepartmentService = require("../../services/DepatmentService");
 const FacultyService = require("../../services/FacultyService");
 const setAlert = require("../../services/AlertService");
+const { departmentSchema } = require("../../helpers/validationSchema")
 
 const index = async (req, res) => {
     try {
@@ -14,7 +15,7 @@ const index = async (req, res) => {
 const create = async (req, res) => {
     try {
         const { success, message, data } = await FacultyService.getAll();
-        return res.render("admin/departments/create", { faculties: success ? data: [], alertMessage: req.flash('message') });
+        return res.render("admin/departments/create", { faculties: success ? data : [], alertMessage: req.flash('message') });
     } catch (error) {
         return res.render("admin/departments/create", { faculties: []});
     }
@@ -22,14 +23,18 @@ const create = async (req, res) => {
 
 const store = async (req, res) => {
     try {
-        const payload = { short_name, faculty_id } = req.body;
-        const { success, message, data } = await DepartmentService.store(payload);
-        req.flash('message', message);
-        if(!success){
+        const { error, value } = await departmentSchema.validateAsync(req.body, { abortEarly: false });
+        if (!error){
+            const payload = { short_name, faculty_id } = req.body;
+            const { success, message, data } = await DepartmentService.store(payload);
+            req.flash('message', message);
             return res.redirect("/admin/departments/add");
         }
-        return res.redirect("/admin/departments/add");
+        else {
+            return res.redirect("/admin/departments/add");
+        }
     } catch (error) {
+        req.flash('message', error.message);
         return res.redirect("/admin/departments/add");
     }
 }
@@ -47,16 +52,22 @@ const edit = async (req, res) => {
 
 
 const update = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.params;
-        const payload = { short_name, faculty_id } = req.body;
-        const { success, message, data } = await DepartmentService.update(id, payload);
-        req.flash('message', message);
-        if(!success){
+        const { error, value } = await departmentSchema.validateAsync(req.body, { abortEarly: false });
+        if (!error){
+            const payload = { short_name, faculty_id } = req.body;
+            const { success, message, data } = await DepartmentService.update(id, payload);
+            req.flash('message', message);
+            // if(!success){
+            //     return res.redirect("/admin/departments/edit/" + id);
+            // }
             return res.redirect("/admin/departments/edit/" + id);
         }
+        req.flash('message', "Update failed");
         return res.redirect("/admin/departments/edit/" + id);
     } catch (error) {
+        req.flash('message', error.message);
         return res.redirect("/admin/departments/edit/" + id);
     }
 }

@@ -12,35 +12,35 @@
     <!-- Title Page-->
     <title>Forms</title>
 
-    {{> css}}
+    <%- include ('../../common/css.ejs') %>
 
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
-        {{> header_mobile}}
+        <%- include ('../../common/header_mobile.ejs') %>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        {{> sidebar}}
+        <%- include ('../../common/sidebar.ejs') %>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            {{> header_desktop}}
+            <%- include ('../../common/header_desktop.ejs') %>
             <!-- HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                            {{#if alertMessage}}
+                        <% if (alertMessage) { %>
                                 <div class="alert alert-info" role="alert">
-                                    {{alertMessage}}
+                                    <%= alertMessage %>
                                 </div>
-                            {{/if}}
+                        <% } %>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
@@ -50,22 +50,25 @@
                                             <h3 class="text-center title-2">Add Department</h3>
                                         </div>
                                         <hr>
-                                        {{#if department}}
-                                        <form action="/admin/departments/edit/{{department.id}}" method="post" novalidate="novalidate">
+                                        <% if (department) { %>
+                                        <form action="/admin/departments/edit/<%= department.id %>" method="post" novalidate="novalidate">
                                             <div class="form-group has-success">
                                                 <label for="name" class="control-label mb-1">Depatment Name</label>
-                                                <input id="short_name" name="short_name" type="text" class="form-control valid" value="{{department.short_name}}">
+                                                <input id="short_name" name="short_name" type="text" class="form-control valid" value="<%= department.short_name %>">
                                             </div>
-                                        {{/if}}
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
                                                     <label for="select" class=" form-control-label">Select Faculty</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <select name="faculty_id" id="faculty_id" class="form-control">
-                                                        {{#each faculties}}
-                                                            <option value="{{id}}">{{short_name}}</option>
-                                                        {{/each}}
+                                                        <% for (let faculty of faculties) { %>
+                                                        <% if (department.faculty_id == faculty.id) { %>
+                                                            <option value="<%= faculty.id %>" selected><%= faculty.short_name %></option>
+                                                        <% } else { %>
+                                                            <option value="<%= faculty.id %>"><%= faculty.short_name %></option>
+                                                            <% } %>
+                                                        <% } %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -73,11 +76,12 @@
                                                 <button id="button" type="submit" class="btn btn-lg btn-info btn-block">Update</button>
                                             </div>
                                         </form>
+                                        <% } %>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{> footer}}
+                        <%- include ('../../common/footer.ejs') %>
                     </div>
                 </div>
             </div>
@@ -85,7 +89,7 @@
 
     </div>
 
-{{> js}}
+<%- include ('../../common/js.ejs') %>
 
 </body>
 
