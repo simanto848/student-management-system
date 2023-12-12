@@ -1,4 +1,5 @@
 const SessionService = require("../../services/SessionService");
+const { sessionSchema } = require("../../helpers/validationSchema");
 const { SEMESTER } = require("../../helpers/constant");
 
 const index = async (req, res) => {
@@ -16,12 +17,17 @@ const create = (req, res) => {
 
 const store = async (req, res) => {
     try {
-        const payload = { session, batch_no, semester } = req.body;
-        const { success, message, data } = await SessionService.store(payload);
-        req.flash('message', message);
-        return res.redirect("/admin/sessions/add");
+        const { error, value } = await sessionSchema.validateAsync(req.body, { abortEarly: true });
+        if (!error){
+            const payload = { session, batch_no, semester } = req.body;
+            const { success, message, data } = await SessionService.store(payload);
+            req.flash('message', message);
+            return res.redirect("/admin/sessions/add");
+        }
+        req.flash('message', error.message)
+        return res.redirect("/admin/sessions/add")
     } catch (error) {
-        req.flash('message', "Something went wrong!")
+        req.flash('message', error.message)
         return res.redirect("/admin/sessions/add")
     }
 }
@@ -30,20 +36,24 @@ const edit = async (req, res) => {
     try {
         const { id } = req.params;
         const { success, message, data } = await SessionService.getByKeyWord('id', id);
-        console.log(data);
-        return res.render("admin/sessions/edit", { sessionResult: data[0] , semester: SEMESTER, alertMessage: req.flash('message')});
+        return res.render("admin/sessions/edit", { sessionData: data[0], semester: SEMESTER, alertMessage: req.flash('message') });
     } catch (error) {
-        req.session('message', message);
+        console.log("Custom: ", error);
         return res.render("admin/sessions/edit");
     }
 }
 
 const update = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.params;
+        const { error, value } = await sessionSchema.validateAsync(req.body, { abortEarly: true });
         const payload = { session, batch_no, semester } = req.body;
-        const { success, message, data } = await SessionService.update(id, payload);
-        req.flash('message', message);
+        if (!error) {
+            const { success, message, data } = await SessionService.update(id, payload);
+            req.flash('message', message);
+            return res.redirect("/admin/sessions/edit/" + id);
+        }
+        req.flash('message', error.message);
         return res.redirect("/admin/sessions/edit/" + id);
     } catch (error) {
         req.flash('message', message);

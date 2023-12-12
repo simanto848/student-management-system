@@ -2,6 +2,7 @@ const TeacherService = require("../../services/TeacherService");
 const DepartmentService = require("../../services/DepatmentService");
 const FacultyService = require("../../services/FacultyService");
 const { TEACHER_ROLE } = require("../../helpers/constant");
+const { teachersSchema } = require("../../helpers/validationSchema");
 
 const index = async (req, res) => {
     try {
@@ -20,12 +21,16 @@ const create = async (req, res) => {
 
 const store = async (req, res) => {
     try {
-        const payload = { name, email, faculty_id, department_id, role } = req.body;
-        const { success, message, data } = await TeacherService.store(payload);
-        req.flash('message', message);
+        const { error, value } = await teachersSchema.validate(req.body, { abortEarly: true });
+        if (!error){
+            const payload = { name, email, faculty_id, department_id, role } = req.body;
+            const { success, message, data } = await TeacherService.store(payload);
+            req.flash('message', message);
+            return res.redirect("/admin/teachers/add");
+        }
+        req.flash('message', error.message);
         return res.redirect("/admin/teachers/add");
     } catch (error) {
-        console.log("In error", error.message);
         req.flash('message', error.message);
         return res.redirect("/admin/teachers/add");
     }
@@ -44,12 +49,17 @@ const edit = async (req, res) => {
     }
 }
 const update = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.params;
-        const payload = { name, email, password, faculty_id, department_id, role } = req.body;
-        console.log(payload);
-        const { success, message, data } = await TeacherService.update(id, payload);
-        req.flash('message', message);
+        const { error, value } = await teachersSchema.validate(req.body, { abortEarly: true });
+        if (!error) {
+            const payload = { name, email, password, faculty_id, department_id, role } = req.body;
+            console.log(payload);
+            const { success, message, data } = await TeacherService.update(id, payload);
+            req.flash('message', message);
+            return res.redirect("/admin/teachers/edit/" + id);
+        }
+        req.flash('message', error.message);
         return res.redirect("/admin/teachers/edit/" + id);
     } catch (error) {
         req.flash('message', error.message);

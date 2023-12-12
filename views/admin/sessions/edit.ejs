@@ -11,36 +11,40 @@
 
     <!-- Title Page-->
     <title>Forms</title>
-
-    {{> css}}
+    <!-- CSS -->
+    <%- include ('../../common/css.ejs') %>
+    <!-- CSS END -->
 
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
-        {{> header_mobile}}
+        <%- include ('../../common/header_mobile.ejs') %>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        {{> sidebar}}
+        <%- include ('../../common/sidebar.ejs') %>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            {{> header_desktop}}
+            <%- include ('../../common/header_desktop.ejs') %>
             <!-- HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                            {{#if alertMessage}}
-                                <div class="alert alert-info" role="alert">
-                                    {{alertMessage}}
-                                </div>
-                            {{/if}}
+                        <% if (alertMessage) { %>
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong><%= alertMessage %></strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                        <% } %>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
@@ -50,15 +54,15 @@
                                             <h3 class="text-center title-2">Update Session</h3>
                                         </div>
                                         <hr>
-                                        {{#if sessionResult}}
-                                        <form action="/admin/sessions/edit/{{sessionResult.id}}" method="post" novalidate="novalidate">
+                                        <% if (sessionData) { %>
+                                        <form action="/admin/sessions/edit/<%= sessionData.id %>" method="post" novalidate="novalidate">
                                             <div class="form-group has-success">
                                                 <label for="session" class="control-label mb-1">Session</label>
-                                                <input id="session" name="session" type="text" class="form-control valid" value="{{sessionResult.session}}">
+                                                <input id="session" name="session" type="text" class="form-control valid" value="<%= sessionData.session %>">
                                             </div>
                                             <div class="form-group has-success">
                                                 <label for="batch_no" class="control-label mb-1">Batch No</label>
-                                                <input id="batch_no" name="batch_no" type="text" class="form-control valid" value="{{sessionResult.batch_no}}">
+                                                <input id="batch_no" name="batch_no" type="text" class="form-control valid" value="<%= sessionData.batch_no %>">
                                             </div>
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
@@ -66,10 +70,14 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <select name="semester" id="semester" class="form-control">
-                                                        <option class="text-uppercase" value="{{sessionResult.semester}}">{{sessionResult.semester}}</option>
-                                                        {{#each semester}}
-                                                            <option class="text-uppercase" value="{{value}}">{{title}}</option>
-                                                        {{/each}}
+                                                        <option>Please select semester</option>
+                                                        <% for (let semester_name of semester) { %>
+                                                            <% if (sessionData.semester === semester_name.value) { %>
+                                                                <option class="text-uppercase" value="<%= semester_name.value %>" selected><%= semester_name.title %></option>
+                                                            <% } else { %>
+                                                                <option class="text-uppercase" value="<%= semester_name.value %>"><%= semester_name.title %></option>
+                                                            <% } %>
+                                                        <% } %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -77,20 +85,23 @@
                                                 <button id="button" type="submit" class="btn btn-lg btn-info btn-block">Update</button>
                                             </div>
                                         </form>
-                                        {{/if}}
+                                        <% } %>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{> footer}}
+                        <!-- Footer -->
+                        <%- include ('../../common/footer.ejs') %>
+                        <!-- FOOTER END -->
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
-{{> js}}
+<!-- SCRIPT -->
+<%- include ('../../common/js.ejs')  %>
+<!-- SCRIPT END -->
 
 </body>
 

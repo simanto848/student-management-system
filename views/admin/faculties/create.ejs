@@ -10,70 +10,69 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Forms</title>
-
-    {{> css}}
+    <title>Add Faculty</title>
+    <%- include ('../../common/css.ejs') %>
 
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
-        {{> header_mobile}}
+        <%- include ('../../common/header_mobile') %>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        {{> sidebar}}
+        <%- include ('../../common/sidebar') %>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            {{> header_desktop}}
+            <%- include ('../../common/header_desktop') %>
             <!-- HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                        {{#if alertMessage}}
-                            <div class="alert alert-info" role="alert">
-                                {{alertMessage}}
+                        <% if (alertMessage) { %>
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong><%= alertMessage %></strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
                             </div>
-                        {{/if}}
+                        <% } %>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header">Faculty</div>
                                     <div class="card-body">
                                         <div class="card-title">
-                                            <h3 class="text-center title-2">Edit Faculty</h3>
+                                            <h3 class="text-center title-2">Add Faculty</h3>
                                         </div>
                                         <hr>
-                                        {{#if faculty}}
-                                        <form action="/admin/faculties/edit/{{id}}" method="post" novalidate="novalidate">
+                                        <form action="/admin/faculties/add" method="post" novalidate="novalidate">
                                             <div class="form-group has-success">
                                                 <label for="name" class="control-label mb-1">Faculty Name</label>
-                                                <input id="name" name="short_name" type="text" class="form-control valid" value="{{short_name}}">
+                                                <input id="name" name="short_name" type="text" class="form-control valid" placeholder="Enter short name of the faculty">
                                             </div>
                                             <div>
-                                                <button id="button" type="submit" class="btn btn-lg btn-info btn-block">Update</button>
+                                                <button id="button" type="submit" class="btn btn-lg btn-info btn-block">ADD</button>
                                             </div>
                                         </form>
-                                        {{/if}}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{> footer}}
+                        <%- include ('../../common/footer.ejs') %>
                     </div>
                 </div>
             </div>
         </div>
 
     </div>
-
-{{> js}}
+    <%- include ('../../common/js.ejs') %>
 
 </body>
 

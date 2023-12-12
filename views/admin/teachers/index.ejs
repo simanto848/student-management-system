@@ -12,24 +12,24 @@ j<!DOCTYPE html>
     <!-- Title Page-->
     <title>Teachers Information</title>
 
-    {{> css}}
+    <%- include ('../../common/css.ejs') %>
 
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
-        {{> header_mobile}}
+        <%- include ('../../common/header_mobile.ejs') %>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        {{> sidebar}}
+        <%- include ('../../common/sidebar.ejs') %>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            {{> header_desktop}}
+            <%- include ('../../common/header_desktop.ejs') %>
             <!-- END HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
@@ -51,54 +51,54 @@ j<!DOCTYPE html>
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Email</th>
-                                                {{!-- <th>Password</th> --}}
                                                 <th>Department</th>
                                                 <th>Faculty</th>
-                                                <th>Designation</th>
+                                                <th>Role</th>
                                                 <th>Joining Date</th>
-                                                <th></th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{#each teachers}}
+                                            <% for (teacher of teachers) { %>
                                             <tr class="tr-shadow">
-                                                <td> {{name}} </td>
-                                                <td> {{email}} </td>
-                                                {{!-- <td> {{password}} </td> --}}
-                                                <td> {{department_name}} </td>
-                                                <td> {{faculty_name}} </td>
-                                                <td class="text-uppercase"> {{role}} </td>
-                                                <td>{{dateFormat created_at "DD-MM-Y"}}</td>
+                                                <td> <%= teacher.name %> </td>
+                                                <td> <%= teacher.email %> </td>
+                                                <td> <%= teacher.department_name %> </td>
+                                                <td> <%= teacher.faculty_name %> </td>
+                                                <td class="text-uppercase"> <%= teacher.role %> </td>
+                                                <td> <%= moment(teachers.created_at).format("DD-MM-Y") %> </td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <a href="/admin/teachers/edit/{{id}}">
+                                                        <a href="/admin/teachers/edit/<%= teacher.id %>}">
                                                             <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                                 <i class="zmdi zmdi-edit"></i>
                                                             </button>
                                                         </a>
-                                                        <button class="item ml-2 delete-teachers-btn" data-toggle="tooltip" data-placement="top" title="Delete" data-teachers-id="{{id}}">
+                                                        <button class="item ml-2 delete-teachers-btn" data-toggle="tooltip" data-placement="top" title="Delete" data-teachers-id="<%= teacher.id %>">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr class="spacer"></tr>
-                                            {{/each}}
+                                            <% } %>
                                         </tbody>
                                     </table>
                                 </div>
                                 <!-- END DATA TABLE -->
                             </div>
                         </div>
-                        {{> footer}}
+                        <!-- Footer -->
+                        <%- include ('../../common/footer.ejs') %>
+                        <!-- FOOTER END -->
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
-    {{> js}}
+<!-- SCRIPT -->
+<%- include ('../../common/js.ejs')  %>
+<!-- SCRIPT END -->
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

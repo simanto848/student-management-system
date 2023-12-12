@@ -15,13 +15,28 @@ const departmentSchema = joi.object({
     faculty_id: joi.string().required()
 });
 
-const facultySchema = joi.object({});
+const facultySchema = joi.object({
+    short_name: joi.string().required(),
+});
 
-const sessionSchema = joi.object({});
+const sessionSchema = joi.object({
+    session: joi.string().required(),
+    batch_no: joi.string().required(),
+    semester: joi.string().required()
+});
 
-const teachersSchema = joi.object({});
+const teachersSchema = joi.object({
+    name: joi.string().required(),
+    email: joi.string().required(),
+    faculty_id: joi.string().required(),
+    department_id: joi.string().required(),
+    role: joi.string().required()
+});
 
-const sessionCourseSchema = joi.object({});
+const sessionCourseSchema = joi.object({
+    session_id: joi.number().required(),
+    department_id: joi.number().required(),
+});
 
 const authSchema = joi.object({
     email: joi.string().required(),
@@ -29,6 +44,11 @@ const authSchema = joi.object({
 });
 
 module.exports = {
+    authSchema,
     courseSchema,
     departmentSchema,
+    facultySchema,
+    sessionSchema,
+    teachersSchema,
+    sessionCourseSchema,
 }

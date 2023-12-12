@@ -1,4 +1,5 @@
 const AdminService = require("../../services/AdminService");
+const { authSchema } = require("../../helpers/validationSchema");
 
 const index = (req, res) => {
     const message = req.flash("message");
@@ -7,11 +8,17 @@ const index = (req, res) => {
 
 const login = async (req, res) => {
     try{
-        const payload = { email, password } = req.body;
-        const { success, message, data } = await AdminService.login(payload);
-        req.flash('message', message);
-        return res.redirect("/admin/dashboard");
+        const { error, value } = await authSchema.validateAsync(req.body, { abortEarly: true });
+        if (!error) {
+            const payload = { email, password } = req.body;
+            const { success, message, data } = await AdminService.login(payload);
+            req.flash('message', message);
+            return res.redirect("/admin/dashboard");
+        }
+        req.flash('message', error.message);
+        return res.redirect("/admin");
     } catch (error) {
+        req.flash('message', error.message);
         return res.redirect("/admin");
     }
 }

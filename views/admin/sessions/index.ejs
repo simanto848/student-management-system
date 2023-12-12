@@ -10,26 +10,27 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Tables</title>
-
-    {{> css}}
+    <title>Sessions</title>
+    <!-- Fontfaces CSS-->
+    <%- include ('../../common/css.ejs') %>
+    <!-- Fontfaces CSS END-->
 
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
-        {{> header_mobile}}
+        <%- include ('../../common/header_mobile.ejs') %>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        {{> sidebar}}
+        <%- include ('../../common/sidebar.ejs') %>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            {{> header_desktop}}
+            <%- include ('../../common/header_desktop.ejs') %>
             <!-- END HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
@@ -39,6 +40,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <!-- DATA TABLE -->
+                                <h3 class="title-5 m-b-35">Session List</h3>
                                 <div class="table-data__tool-right float-right">
                                     <a href="/admin/sessions/add">
                                         <button class="au-btn au-btn-icon au-btn--green au-btn--small">
@@ -53,38 +55,40 @@
                                                 <th>Semester</th>
                                                 <th>Batch</th>
                                                 <th>Create At</th>
-                                                <th></th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{#each sessions}}
+                                            <% for (let session of sessions) { %>
                                             <tr class="tr-shadow">
-                                                <td> {{session}} </td>
-                                                <td class="text-uppercase"> {{semester}} </td>
-                                                <td> {{batch_no}} </td>
-                                                <td>{{dateFormat created_at "DD-MM-Y"}}</td>
+                                                <td> <%= session.session %> </td>
+                                                <td class="text-uppercase"> <%= session.semester %> </td>
+                                                <td> <%= session.batch_no %> </td>
+                                                <td> <%= moment(session.created_at).format("DD-MM-Y") %> </td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <a href="/admin/sessions/edit/{{id}}">
+                                                        <a href="/admin/sessions/edit/<%= session.id %>">
                                                             <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                                 <i class="zmdi zmdi-edit"></i>
                                                             </button>
                                                         </a>
-                                                        <button class="item ml-2 delete-session-btn" data-toggle="tooltip" data-placement="top" title="Delete" data-session-id="{{id}}">
+                                                        <button class="item ml-2 delete-session-btn" data-toggle="tooltip" data-placement="top" title="Delete" data-session-id="<%= session.id %>">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr class="spacer"></tr>
-                                            {{/each}}
+                                            <% } %>
                                         </tbody>
                                     </table>
                                 </div>
                                 <!-- END DATA TABLE -->
                             </div>
                         </div>
-                        {{> footer}}
+                        <!-- Footer -->
+                        <%- include ('../../common/footer.ejs') %>
+                        <!-- FOOTER END -->
                     </div>
                 </div>
             </div>
@@ -92,7 +96,9 @@
 
     </div>
 
-    {{> js}}
+    <!-- SCRIPT -->
+    <%- include ('../../common/js.ejs')  %>
+    <!-- SCRIPT END -->
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

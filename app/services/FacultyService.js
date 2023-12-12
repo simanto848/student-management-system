@@ -4,23 +4,23 @@ const { success, error } = require("./ResponseService");
 const tableName = 'faculties'
 
 const getAll = async () => {
-    return await CrudService.simpleGetAll("faculties");
+    return await CrudService.simpleGetAll(tableName);
 }
 
 const getByKeyword = async (keyword, value) => {
-    return await CrudService.getByKeyword("faculties", keyword, value);
+    return await CrudService.getByKeyword(tableName, keyword, value);
 }
 
 const store = async (payload) => {
-    return await CrudService.store("faculties", payload);
+    return await CrudService.store(tableName, payload);
 }
 
 const update = async (id, payload) => {
-    return await CrudService.update("faculties", id, payload);
+    return await CrudService.update(tableName, id, payload);
 }
 
 const destroy = async (id) => {
-    return await CrudService.destroy("faculties", id);
+    return await CrudService.destroy(tableName, id);
 }
 
 const getDepartments = async (id) => {

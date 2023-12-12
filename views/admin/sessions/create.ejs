@@ -11,39 +11,37 @@
 
     <!-- Title Page-->
     <title>Forms</title>
-
-    {{> css}}
-
+    <%- include ('../../common/css.ejs') %>
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
-        {{> header_mobile}}
+        <%- include ('../../common/header_mobile.ejs') %>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        {{> sidebar}}
+        <%- include ('../../common/sidebar.ejs') %>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            {{> header_desktop}}
+            <%- include ('../../common/header_desktop.ejs') %>
             <!-- HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                            {{#if alertMessage}}
+                            <% if (alertMessage) { %>
                                 <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                    <strong>{{alertMessage}}</strong>
+                                    <strong><%= alertMessage %></strong>
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">×</span>
                                     </button>
                                 </div>
-                            {{/if}}
+                                <% } %>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
@@ -69,9 +67,9 @@
                                                 <div class="col-12 col-md-9">
                                                     <select name="semester" id="semester" class="form-control">
                                                         <option>Please select Session</option>
-                                                        {{#each semester}}
-                                                            <option class="text-uppercase" value="{{value}}">{{title}}</option>
-                                                        {{/each}}
+                                                        <% for (let semester_name of semester) { %>
+                                                            <option class="text-uppercase" value="<%= semester_name.id %>"><%= semester_name.title %></option>
+                                                        <% } %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -83,15 +81,17 @@
                                 </div>
                             </div>
                         </div>
-                        {{> footer}}
+                        <!-- Footer -->
+                        <%- include ('../../common/footer.ejs') %>
+                        <!-- FOOTER END -->
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
-{{> js}}
+<!-- SCRIPT -->
+<%- include ('../../common/js.ejs')  %>
+<!-- SCRIPT END -->
 
 </body>
 

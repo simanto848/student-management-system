@@ -11,25 +11,26 @@
 
     <!-- Title Page-->
     <title>Add Teacher</title>
-
-    {{> css}}
+    <!-- CSS -->
+    <%- include ('../../common/css.ejs') %>
+    <!-- END CSS -->
 
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
-        {{> header_mobile}}
+        <%- include ('../../common/header_mobile.ejs') %>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        {{> sidebar}}
+        <%- include ('../../common/sidebar.ejs') %>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            {{> header_desktop}}
+            <%- include ('../../common/header_desktop.ejs') %>
             <!-- HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
@@ -41,14 +42,14 @@
                                 <div class="card">
                                     <div class="card-header">Teacher</div>
                                     <div class="card-body">
-                                        {{#if alertMessage}}
+                                        <% if (alertMessage) { %>
                                             <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                                <strong>{{alertMessage}}</strong>
+                                                <strong><%= alertMessage %></strong>
                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
                                             </div>
-                                        {{/if}}
+                                        <% } %>
                                         <div class="card-title">
                                             <h3 class="text-center title-2">Add Teacher</h3>
                                         </div>
@@ -69,9 +70,9 @@
                                                 <div class="col-12 col-md-9">
                                                     <select onchange="getFacultyDepartments(this)" name="faculty_id" id="faculty_id" class="form-control">
                                                         <option>Please select faculty</option>
-                                                        {{#each faculties}}
-                                                            <option value="{{id}}">{{short_name}}</option>
-                                                        {{/each}}
+                                                        <% for (faculty of faculties) { %>
+                                                            <option value="<%= faculty.id %>"><%= faculty.short_name %></option>
+                                                        <% } %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -82,9 +83,9 @@
                                                 <div class="col-12 col-md-9">
                                                     <select name="department_id" id="department_id" class="form-control">
                                                         <option>Please select department</option>
-                                                        {{#each departments}}
-                                                            <option value="{{id}}">{{short_name}}</option>
-                                                        {{/each}}
+                                                        <% for (department of departments) { %>
+                                                            <option value="<%= department.id %>"><%= department.short_name %></option>
+                                                        <% } %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -95,9 +96,9 @@
                                                 <div class="col-12 col-md-9">
                                                     <select name="role" id="role" class="form-control">
                                                         <option>Please select Role</option>
-                                                        {{#each teacher_rolls}}
-                                                            <option class="text-uppercase" value="{{title}}">{{title}}</option>
-                                                        {{/each}}
+                                                        <% for (role of teacher_rolls) { %>
+                                                            <option class="text-uppercase" value="<%= role.id %>"><%= role.title %></option>
+                                                        <% } %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -109,12 +110,15 @@
                         </div>
                     </div>
                 </div>
-                {{> footer}}
+                <!-- Footer -->
+                <%- include ('../../common/footer.ejs') %>
+                <!-- FOOTER END -->
             </div>
         </div>
     </div>
-
-{{> js}}
+<!-- SCRIPT -->
+<%- include ('../../common/js.ejs')  %>
+<!-- SCRIPT END -->
 
 </body>
 <script>

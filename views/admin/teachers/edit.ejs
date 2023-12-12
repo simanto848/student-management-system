@@ -11,25 +11,24 @@
 
     <!-- Title Page-->
     <title>Add Teacher</title>
-
-    {{> css}}
+    <%- include ('../../common/css.ejs') %>
 
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
-        {{> header_mobile}}
+        <%- include ('../../common/header_mobile.ejs') %>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        {{> sidebar}}
+        <%- include ('../../common/sidebar.ejs') %>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            {{> header_desktop}}
+            <%- include ('../../common/header_desktop.ejs') %>
             <!-- HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
@@ -41,38 +40,41 @@
                                 <div class="card">
                                     <div class="card-header">Teacher</div>
                                     <div class="card-body">
-                                        {{#if alertMessage}}
+                                        <% if (alertMessage) { %>
                                             <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                                <strong>{{alertMessage}}</strong>
+                                                <strong><%= alertMessage %></strong>
                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
                                             </div>
-                                        {{/if}}
+                                        <% } %>
                                         <div class="card-title">
                                             <h3 class="text-center title-2">Add Teacher</h3>
                                         </div>
                                         <hr>
-                                        {{#each teachers}}
-                                        <form action="/admin/teachers/edit/{{id}}" method="post" novalidate="novalidate">
+                                        <% for (let teacher of teachers) { %>
+                                        <form action="/admin/teachers/edit/<%= teacher.id %>" method="post" novalidate="novalidate">
                                             <div class="form-group has-success">
                                                 <label for="name" class="control-label mb-1">Name</label>
-                                                <input id="name" name="name" type="text" class="form-control valid" value="{{name}}">
+                                                <input id="name" name="name" type="text" class="form-control valid" value="<%= teacher.name %>">
                                             </div>
                                             <div class="form-group has-success">
                                                 <label for="name" class="control-label mb-1">Email</label>
-                                                <input id="email" name="email" type="email" class="form-control valid" value="{{email}}">
+                                                <input id="email" name="email" type="email" class="form-control valid" value="<%= teacher.email %>">
                                             </div>
-                                        {{/each}}
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
                                                     <label for="select" class=" form-control-label">Select Faculty</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <select name="faculty_id" id="faculty_id" class="form-control">
-                                                        {{#each faculties}}
-                                                            <option value="{{id}}">{{short_name}}</option>
-                                                        {{/each}}
+                                                        <% for (let faculty of faculties) { %>
+                                                            <% if (teacher.id === faculty.id) { %>
+                                                                <option value="<%= faculty.id %>" selected><%= faculty.short_name %></option>
+                                                            <% } else { %>
+                                                                <option value="<%= faculty.id %>"><%= faculty.short_name %></option>
+                                                            <% } %>
+                                                        <% } %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -82,9 +84,13 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <select name="department_id" id="department_id" class="form-control">
-                                                        {{#each departments}}
-                                                            <option value="{{id}}">{{short_name}}</option>
-                                                        {{/each}}
+                                                        <% for (let department of departments) { %>
+                                                            <% if (teacher.id === department.id) { %>
+                                                                <option value="<%= department.id %>" selected><%= department.short_name %></option>
+                                                            <% } else { %>
+                                                                <option value="<%= department.id %>"><%= department.short_name %></option>
+                                                            <% } %>
+                                                        <% } %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -94,9 +100,13 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <select name="role" id="role" class="form-control">
-                                                        {{#each teacher_rolls}}
-                                                            <option class="text-uppercase" value="{{title}}">{{title}}</option>
-                                                        {{/each}}
+                                                        <% for (let role of teacher_rolls) { %>
+                                                            <% if (teacher.id === role.id) { %>
+                                                                <option class="text-uppercase" value="<%= role.title%>" selected><%= role.title%></option>
+                                                            <% } else { %>
+                                                                <option class="text-uppercase" value="<%= role.title%>"><%= role.title%></option>
+                                                            <% } %>
+                                                        <% } %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -104,16 +114,18 @@
                                                 <button id="button" type="submit" class="btn btn-lg btn-info btn-block">ADD</button>
                                             </div>
                                         </form>
+                                        <% } %>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {{> footer}}
+                <%- include ('../../common/footer.ejs') %>
             </div>
         </div>
     </div>
-
-{{> js}}
+</div>
+<%- include ('../../common/js.ejs') %>
 
 </body>
 

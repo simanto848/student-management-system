@@ -11,25 +11,26 @@ j<!DOCTYPE html>
 
     <!-- Title Page-->
     <title>Session Course</title>
-
-    {{> css}}
+    <!-- CSS-->
+    <%- include ('../../common/css.ejs') %>
+    <!-- CSS END-->
 
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE-->
-        {{> header_mobile}}
+        <%- include ('../../common/header_mobile.ejs') %>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        {{> sidebar}}
+        <%- include ('../../common/sidebar.ejs') %>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <!-- HEADER DESKTOP-->
-            {{> header_desktop}}
+            <%- include ('../../common/header_desktop.ejs') %>
             <!-- END HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
@@ -52,9 +53,9 @@ j<!DOCTYPE html>
                                     <div class="col-12 col-md-9">
                                         <select onchange="getCoursesBySession(this)"  id="session_id" class="form-control">
                                             <option>Please select session</option>
-                                            {{#each sessions}}
-                                                <option value="{{id}}">{{session}} {{semester}}</option>
-                                            {{/each}}
+                                            <% for (let session of sessions) { %>
+                                                <option value="<%= session.id %>"><%= session.session %> <%= session.semester %></option>
+                                            <% } %>
                                         </select>
                                     </div>
                                 </div>
@@ -77,15 +78,17 @@ j<!DOCTYPE html>
                                 <!-- END DATA TABLE -->
                             </div>
                         </div>
-                        {{> footer}}
+                        <!-- Footer -->
+                        <%- include ('../../common/footer.ejs') %>
+                        <!-- FOOTER END -->
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
-    {{> js}}
+    <!-- SCRIPT -->
+    <%- include ('../../common/js.ejs')  %>
+    <!-- SCRIPT END -->
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

@@ -1,6 +1,7 @@
 const SessionCourseService = require("../../services/SessionCourseService");
 const DepartmentService = require("../../services/DepatmentService");
 const SessionService = require("../../services/SessionService");
+const { sessionCourseSchema } = require("../../helpers/validationSchema");
 
 const index = async (req, res) => {
     const { success, message, data } = await SessionService.getAll();
@@ -15,12 +16,17 @@ const create = async (req, res) => {
 
 const store = async(req, res) => {
     try {
-        const payload = { session_id, course_id } = req.body;
-        const { success, message, data } = await SessionCourseService.store(payload);
-        req.flash('message', message);
+        const { error, value } = await  sessionCourseSchema.validateAsync(req.body, { abortEarly: true });
+        if (!error) {
+            const payload = { session_id, course_id } = req.body;
+            const { success, message, data } = await SessionCourseService.store(payload);
+            req.flash('message', message);
+            return res.redirect("/admin/session-courses/add");
+        }
+        req.flash('message', error.message);
         return res.redirect("/admin/session-courses/add");
     } catch (error) {
-        req.flash('message', "Something went wrong!")
+        req.flash('message', error.message);
         return res.redirect("/admin/session-courses/add");
     }
 }
