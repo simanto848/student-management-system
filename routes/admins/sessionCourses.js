@@ -1,11 +1,9 @@
 const router = require("express").Router();
-const { index, create, store, edit, update, destroy } = require("../../app/controllers/admin/SessionCourseController");
+const { index, create, store, getDepartmentCourses } = require("../../app/controllers/admin/SessionCourseController");
 
 router.get("/", index);
 router.get("/add", create);
 router.post("/add", store);
-router.get("/edit/:id", edit);
-router.post("/edit/:id", update);
-router.get("/delete/:id", destroy);
+router.get("/:sessionId/departments/:departmentId/courses", getDepartmentCourses);
 
 module.exports = router;

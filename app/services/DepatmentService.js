@@ -35,6 +35,7 @@ const getDepartmentCourses = async (id) => {
     });
 }
 
+
 module.exports = {
     getAll,
     getByKeyword,

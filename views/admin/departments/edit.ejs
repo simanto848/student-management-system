@@ -36,7 +36,7 @@
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                        <% if (alertMessage) { %>
+                        <% if (alertMessage && alertMessage.length) { %>
                                 <div class="alert alert-info" role="alert">
                                     <%= alertMessage %>
                                 </div>

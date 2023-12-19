@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const { index, login, dashboard } = require("../../app/controllers/admin/AdminController");
+const { index, dashboard } = require("../../app/controllers/admin/AdminController");
+const { AdminLogin } = require("../../app/controllers/AuthController");
 const Faculties = require("./faculties");
 const Departments = require("./departments");
 const Teachers = require("./teachers");
@@ -8,7 +9,7 @@ const Courses = require("./courses");
 const SessionCourses = require("./sessionCourses");
 
 router.get("/", index);
-router.post("/", login);
+router.post("/", AdminLogin);
 router.get("/dashboard", dashboard);
 router.use("/faculties", Faculties);
 router.use("/departments", Departments);

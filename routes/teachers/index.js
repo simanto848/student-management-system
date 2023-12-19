@@ -1,0 +1,11 @@
+const router = require("express").Router();
+const { index , dashboard } = require("../../app/controllers/teacher/TeacherController");
+const { TeacherLogin } = require("../../app/controllers/AuthController");
+const departmenHead = require("./departmenHead");
+
+router.get("/", index);
+router.post("/", TeacherLogin);
+router.get("/dashboard", dashboard);
+router.use("/department-head", departmenHead);
+
+module.exports = router;

@@ -36,11 +36,12 @@ const teachersSchema = joi.object({
 const sessionCourseSchema = joi.object({
     session_id: joi.number().required(),
     department_id: joi.number().required(),
+    course_id: joi.required(),
 });
 
 const authSchema = joi.object({
     email: joi.string().required(),
-    password: joi.string().required(),
+    password: joi.string().min(6).required()
 });
 
 module.exports = {

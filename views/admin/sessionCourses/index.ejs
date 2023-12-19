@@ -67,6 +67,7 @@ j<!DOCTYPE html>
                                                 <th>Course Code</th>
                                                 <th>Course Title</th>
                                                 <th>Credit Hour</th>
+                                                <th>Assigned Teacher</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -136,6 +137,7 @@ j<!DOCTYPE html>
                                 <td>${item.course_code}</td>
                                 <td>${item.course_title}</td>
                                 <td>${item.credit_hour}</td>
+                                <td>${item.teacher_name !== null && item.teacher_name !== undefined && item.teacher_name !== '' ? item.teacher_name : 'Not Assigned'}</td>
                                 <td>
                                     <div class="table-data-feature">
                                         <a href="/admin/courses/edit/${item.id}">

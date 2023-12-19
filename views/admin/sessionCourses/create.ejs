@@ -37,7 +37,7 @@
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                        <% if (alertMessage) { %>
+                        <% if (alertMessage && alertMessage.length) { %>
                             <div class="alert alert-info alert-dismissible fade show" role="alert">
                                 <strong><%= alertMessage %></strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -60,7 +60,7 @@
                                                     <label for="select" class=" form-control-label">Select Session</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <select name="session_id" id="session_id" class="form-control">
+                                                    <select onchange="setSessionId(this)" name="session_id" id="session_id" class="form-control">
                                                         <option>Please select session</option>
                                                         <% for (let session of sessions) { %>
                                                             <option class="text-uppercase" value="<%= session.id %>"><%= session.session %> (<%= session.semester %>)</option>
@@ -73,7 +73,7 @@
                                                     <label for="select" class=" form-control-label">Select Department</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <select onchange="getCourses(this)"  id="department_id" class="form-control">
+                                                    <select onchange="setDepartmentId(this)" name="department_id"  id="department_id" class="form-control">
                                                         <option>Please select department</option>
                                                         <% for (let department of departments) { %>
                                                             <option class="text-uppercase" value="<%= department.id %>"><%= department.short_name %></option>
@@ -85,7 +85,7 @@
                                                 
                                             </div>
                                             <div>
-                                                <button id="button" type="submit" class="btn btn-lg btn-info btn-block">ADD</button>
+                                                <button id="button" type="submit" class="btn btn-lg btn-info btn-block">Assign Courses</button>
                                             </div>
                                         </form>
                                     </div>
@@ -103,29 +103,46 @@
     <!-- SCRIPT -->
     <%- include ('../../common/js.ejs')  %>
     <!-- SCRIPT END -->
+
 <script>
-    async function getCourses(e) {
-        const checkboxContainer  = document.getElementById('course_checkboxes');
-        checkboxContainer.innerHTML = null;
-        const response = await fetch(`/admin/departments/${e.value}/courses`);
-        const { success, message, data } = await response.json();
-        if(!success) {
-            alert(message)
-        } else {
-            data.forEach(item => {
-                const checkboxDiv = generateCheckBoxHtml(item);
-                checkboxContainer.appendChild(checkboxDiv);
-            });
+    let sessionId = null
+    let departmentId = null
+
+    function setSessionId(e) {
+        sessionId = e.value
+        getCourses()
+    }
+
+    function setDepartmentId(e) {
+        departmentId = e.value
+        getCourses()
+    }
+
+    async function getCourses() {
+        if(sessionId && departmentId) {
+            const checkboxContainer  = document.getElementById('course_checkboxes');
+            checkboxContainer.innerHTML = null;
+            const response = await fetch(`/admin/session-courses/${sessionId}/departments/${departmentId}/courses`);
+            const { success, message, data } = await response.json();
+            if(!success) {
+                alert(message)
+            } else {
+                data.forEach(item => {
+                    const checkboxDiv = generateCheckBoxHtml(item);
+                    checkboxContainer.appendChild(checkboxDiv);
+                });
+            }
         }
     }
 
     function generateCheckBoxHtml(item){
         var checkboxDiv = document.createElement('div');
-        checkboxDiv.innerHTML = `<input class="form-check-input mb-2" type="checkbox" name="course_id[]" id="flexCheckChecked${item.id}" value="${item.id}" checked>
+        checkboxDiv.innerHTML = `<input class="form-check-input mb-2" type="checkbox" name="course_id[]" id="flexCheckChecked${item.id}" value="${item.id}" ${item.checked ? 'checked' : ''}>
                     <label class="form-check-label" for="flexCheckChecked${item.id}">${item.title}</label>`;
         return checkboxDiv
     }
 </script>
+
 
 </body>
 </html>
