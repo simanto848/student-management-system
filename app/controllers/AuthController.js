@@ -28,7 +28,6 @@ const TeacherLogin = async (req, res) => {
             const payload = { email, password } = req.body;
             const { success, message, data } = await TeacherService.login(payload);
             req.session.teacher = data;
-            req.flash('message', message);
             return res.redirect("/teacher/dashboard");
         }
         req.flash('message', error.message);

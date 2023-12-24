@@ -57,7 +57,7 @@
                                                 <label for="select" class=" form-control-label">Select Session</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <select onchange="getCoursesBySession(this)" name="faculty_id" id="faculty_id" class="form-control">
+                                                <select onchange="setSessionId(this)" name="session_id" id="session_id" class="form-control">
                                                     <option>Please select session</option>
                                                     <% for (let session of sessions) { %>
                                                         <option value="<%= session.id %>">Session: <%= session.session %> Semester: <%= session.semester %> Batch: <%= session.batch_no %></option>
@@ -81,7 +81,7 @@
                                         </div>
 
                                         <div>
-                                            <button id="button" type="submit" class="btn btn-lg btn-info btn-block">ADD</button>
+                                            <button id="button" type="submit" class="btn btn-lg btn-info btn-block">Update</button>
                                         </div>
                                     </form>
                                 </div>
@@ -99,18 +99,27 @@
 
 <script>
 
-    async function getCoursesBySession(e) {
-        const tableContainer = document.getElementById('table_body_container');
-        tableContainer.innerHTML = null;
-        const response = await fetch(`/admin/sessions/${e.value}/courses`);
-        const { success, message, data } = await response.json();
-        if(!success) {
-            alert(message)
-        } else {
-            data.forEach((item, index) => {
-                const trElement = appendTableRow(index, item);
-                tableContainer.appendChild(trElement);
-            });
+    let sessionId = null
+
+    function setSessionId(e) {
+        sessionId = e.value
+        getCourses()
+    }
+    
+    async function getCourses() {
+        if(sessionId) {
+            const tableContainer = document.getElementById("table_body_container")
+            tableContainer.innerHTML = "";
+            const response = await fetch(`/admin/sessions/${sessionId}/course/teacher`);
+            const { success, message, data } = await response.json();
+            if(!success) {
+                alert(message)
+            } else {
+                data.forEach((item, index) => {
+                    const row = appendTableRow(index, item);
+                    tableContainer.appendChild(row);
+                });
+            }
         }
     }
 
@@ -119,10 +128,25 @@
         trElement.innerHTML = `<td>${index + 1}</td>
                             <td>${item.course_code}</td>
                             <td>${item.course_title}</td>
-                            <td>${item.teacher_name !== null && item.teacher_name !== undefined && item.teacher_name !== '' ? item.teacher_name : 'Not Assigned'}</td>`
+                            <td>
+                                <select name="teacher_id[]" class="form-control" required>
+                                    <option>Not Assigned</option>
+                                    <% for (let teacher of teachers) { %>
+                                        <option value="<%= teacher.id %>"><%= teacher.name %></option>
+                                    <% } %>
+                                </select>
+                            </td>
+                            <input type="hidden" name="course_id[]" value="${item.course_id}">
+                            <input type="hidden" name="session_course_id[]" value="${item.id}">`;
         return trElement
     }
 </script>
+
+</body>
+
+</html>
+<!-- end document-->
+
 
 </body>
 

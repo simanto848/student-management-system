@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const { index, addSessionTeacher } = require("../../app/controllers/teacher/DepartmentHeadController");
+const { index, addCourseTeacher } = require("../../app/controllers/teacher/DepartmentHeadController");
 
 router.get("/add-course-teacher", index);
+router.post("/add-course-teacher", addCourseTeacher)
 
 module.exports = router
