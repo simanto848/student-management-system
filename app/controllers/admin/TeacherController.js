@@ -21,7 +21,6 @@ const create = async (req, res) => {
 
 const store = async (req, res) => {
     try {
-        console.log("Role => ", req.body.role);
         const { error, value } = teachersSchema.validate(req.body, { abortEarly: true });
         if (!error){
             const payload = { name, email, faculty_id, department_id, role } = req.body;

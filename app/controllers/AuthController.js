@@ -1,6 +1,7 @@
-const {authSchema} = require("../helpers/validationSchema");
+const { authSchema } = require("../helpers/validationSchema");
 const AdminService = require("../services/AdminService");
 const TeacherService = require("../services/TeacherService");
+const StudentService = require("../services/StudentService");
 
 
 const AdminLogin = async (req, res) => {
@@ -9,7 +10,7 @@ const AdminLogin = async (req, res) => {
         if (!error) {
             const payload = { email, password } = req.body;
             const { success, message, data } = await AdminService.login(payload);
-            req.session.admin = data;
+            req.session.user = data;
             req.flash('message', message);
             return res.redirect("/admin/dashboard");
         }
@@ -27,7 +28,7 @@ const TeacherLogin = async (req, res) => {
         if (!error) {
             const payload = { email, password } = req.body;
             const { success, message, data } = await TeacherService.login(payload);
-            req.session.teacher = data;
+            req.session.user = data;
             return res.redirect("/teacher/dashboard");
         }
         req.flash('message', error.message);
@@ -38,7 +39,25 @@ const TeacherLogin = async (req, res) => {
     }
 }
 
+const StudentLogin = async (req, res) => {
+    try{
+        const { error, value } = await authSchema.validateAsync(req.body, { abortEarly: true });
+        if (!error) {
+            const payload = { email, password } = req.body;
+            const { success, message, data } = await StudentService.login(payload);
+            req.session.user = data;
+            return res.redirect("/admin/dashboard");
+        }
+        req.flash('message', error.message);
+        return res.redirect("/");
+    } catch (error) {
+        req.flash('message', error.message);
+        return res.redirect("/");
+    }
+}
+
 module.exports = {
     AdminLogin,
     TeacherLogin,
+    StudentLogin
 }

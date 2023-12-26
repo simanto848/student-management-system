@@ -39,6 +39,17 @@ const sessionCourseSchema = joi.object({
     course_id: joi.required(),
 });
 
+const adminStudentSchema = joi.object({
+    name: joi.string().required(),
+    registration_no: joi.string().required(),
+    roll_no: joi.required(),
+    phone_no: joi.required(),
+    department_id: joi.required(),
+    session_id: joi.required(),
+    email: joi.string().required(),
+    course_fee: joi.required(),
+})
+
 const authSchema = joi.object({
     email: joi.string().required(),
     password: joi.string().min(6).required()
@@ -52,4 +63,5 @@ module.exports = {
     sessionSchema,
     teachersSchema,
     sessionCourseSchema,
+    adminStudentSchema
 }

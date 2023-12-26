@@ -100,6 +100,8 @@
 <script>
 
     let sessionId = null
+    let teachers = '<%- JSON.stringify(teachers) %>'
+    teachers = JSON.parse(teachers)
 
     function setSessionId(e) {
         sessionId = e.value
@@ -125,20 +127,23 @@
 
     function appendTableRow(index, item) {
         var trElement = document.createElement('tr');
-        trElement.innerHTML = `<td>${index + 1}</td>
-                            <td>${item.course_code}</td>
-                            <td>${item.course_title}</td>
-                            <td>
-                                <select name="teacher_id[]" class="form-control" required>
-                                    <option>Not Assigned</option>
-                                    <% for (let teacher of teachers) { %>
-                                        <option value="<%= teacher.id %>"><%= teacher.name %></option>
-                                    <% } %>
-                                </select>
-                            </td>
-                            <input type="hidden" name="course_id[]" value="${item.course_id}">
-                            <input type="hidden" name="session_course_id[]" value="${item.id}">`;
-        return trElement
+        trElement.innerHTML = `
+            <td>${index+1}</td>
+            <td>${item.course_code}</td>
+            <td>${item.course_title}</td>
+            <td>${prepareDropDowns(item)}</td>
+            <input type="hidden" name="course_id[]" value="${item.course_id}">
+            <input type="hidden" name="session_course_id[]" value="${item.id}">
+        `
+        return trElement;
+    }
+
+    function prepareDropDowns(item) {
+        let selectOptions = "<option value=''>Not Assigned</option>"
+        teachers.forEach(teacher => {
+            selectOptions += `<option value="${teacher.id}" ${teacher.id == item.teacher_id ? 'selected' : ''}>${teacher.name}</option>`
+        });
+        return `<select name="teacher_id[]" class="form-control" required>${selectOptions}</select>`
     }
 </script>
 

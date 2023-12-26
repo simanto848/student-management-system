@@ -59,9 +59,9 @@ const update = async (req, res) => {
             const payload = { short_name, faculty_id } = req.body;
             const { success, message, data } = await DepartmentService.update(id, payload);
             req.flash('message', message);
-            // if(!success){
-            //     return res.redirect("/admin/departments/edit/" + id);
-            // }
+            if(!success){
+                return res.redirect("/admin/departments/edit/" + id);
+            }
             return res.redirect("/admin/departments/edit/" + id);
         }
         req.flash('message', "Update failed");
@@ -84,7 +84,6 @@ const destroy = async (req, res) => {
         return res.redirect("/admin/departments");
     }
 };
-
 
 module.exports = {
     index,

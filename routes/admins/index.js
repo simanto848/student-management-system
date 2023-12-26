@@ -7,6 +7,7 @@ const Teachers = require("./teachers");
 const Sessions = require("./sessions");
 const Courses = require("./courses");
 const SessionCourses = require("./sessionCourses");
+const Students = require("./students");
 
 router.get("/", index);
 router.post("/", AdminLogin);
@@ -17,5 +18,6 @@ router.use("/teachers", Teachers);
 router.use("/sessions", Sessions);
 router.use("/courses", Courses);
 router.use("/session-courses", SessionCourses);
+router.use("/students", Students);
 
 module.exports = router;

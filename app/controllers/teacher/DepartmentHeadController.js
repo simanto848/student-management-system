@@ -14,7 +14,7 @@ const index = async (req, res) => {
 
 const getDepartmentCourses = async (req, res) => {
     const { sessionId } = req.params;
-    const department_id = req.session.teacher.department_id
+    const department_id = req.session.user.department_id
     try{
         const response = await DepartmentHeadService.getDepartmentCourses(sessionId, department_id);
         return res.send(response);
@@ -30,7 +30,7 @@ const getDepartmentCourses = async (req, res) => {
 const addCourseTeacher = async (req, res) => {
     try {
         const { session_id, course_id, session_course_id, teacher_id } = req.body;
-        const department_id = req.session.teacher.department_id
+        const department_id = req.session.user.department_id
         const { success, message, data } = await DepartmentHeadService.assign(session_id, department_id, course_id, session_course_id, teacher_id);
 
         if (!success) {
