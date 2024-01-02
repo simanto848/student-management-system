@@ -35,11 +35,25 @@ const getCourses = async (id) => {
     });
 }
 
+const getStudents = async (sessionId) => {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT students.id, students.roll_no, students.name, students.registration_no, students.phone_no, students.email, students.course_fee, departments.short_name AS department_name, sessions.session FROM students INNER JOIN departments ON students.department_id = departments.id INNER JOIN sessions ON students.session_id = sessions.id WHERE students.session_id = ?`, sessionId, (err, result) => {
+            if (err) {
+                reject(error(err));
+            } else {
+                resolve(success("Successfully retrieve data", result));
+            }
+        });
+    })
+}
+
+
 module.exports = {
     getAll,
     getByKeyWord,
     store,
     update,
     destroy,
-    getCourses
+    getCourses,
+    getStudents
 }

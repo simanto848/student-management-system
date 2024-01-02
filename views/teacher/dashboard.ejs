@@ -21,7 +21,35 @@
     <!-- END HEADER MOBILE-->
 
     <!-- MENU SIDEBAR-->
-    <%- include ('../common/sidebar.ejs') %>
+    <aside class="menu-sidebar d-none d-lg-block">
+        <div class="logo">
+            <a href="/">
+                <img src="/images/icon/logo.png" alt="Cool Admin" />
+            </a>
+        </div>
+        <div class="menu-sidebar__content js-scrollbar1">
+            <nav class="navbar-sidebar">
+                <ul class="list-unstyled navbar__list">
+                    <li class="active has-sub">
+                        <a class="js-arrow" href="#">
+                            <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="/teacher/department-head/add-course-teacher">
+                            <i class="fas fa-chart-bar"></i>Course Teacher</a>
+                    </li>
+                    <li>
+                        <a href="/teacher/#">
+                            <i class="fas fa-chart-bar"></i>Courses</a>
+                    </li>
+                    <li>
+                        <a href="/teachers/#">
+                            <i class="fas fa-table"></i>Result</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
     <!-- END MENU SIDEBAR-->
 
     <!-- PAGE CONTAINER-->
@@ -34,8 +62,35 @@
         <div class="main-content">
             <div class="section__content section__content--p30">
                 <div class="container-fluid">
-                    <h2>Add Session Course Teacher</h2>
-                    <a href="/teacher/department-head/add-course-teacher">Add</a>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- DATA TABLE -->
+                            <div>
+                                <button onclick="getTeacherCourses()" class="btn btn-secondary">Show Assigned Courses</button>
+                            </div>
+                            <div class="table-responsive table-responsive-data2">
+                                <table class="table table-data2 text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Course Code</th>
+                                            <th>Course Title</th>
+                                            <th>Credit Hour</th>
+                                            <th>Semester</th>
+                                            <th>Batch</th>
+                                            <th>Depatment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_body_container">
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- END DATA TABLE -->
+                        </div>
+                    </div>
+                    <!-- Footer -->
+                    <%- include ('../common/footer.ejs') %>
+                    <!-- FOOTER END -->
                 </div>
             </div>
         </div>
@@ -44,6 +99,36 @@
 
 </div>
 <%- include ('../common/js.ejs') %>
+
+<script>
+
+    async function getTeacherCourses() {
+        const tableContainer = document.getElementById('table_body_container');
+        tableContainer.innerHTML = null;
+        const response = await fetch(`/teacher/courses/`);
+        const { success, message, data } = await response.json();
+        if(!success) {
+            alert(message)
+        } else {
+            data.forEach((item) => {
+                const trElement = appendTableRow(item);
+                tableContainer.appendChild(trElement);
+            });
+        }
+    }
+
+    function appendTableRow(item) {
+        var trElement = document.createElement('tr');
+        trElement.innerHTML = `
+                            <td>${item.course_code}</td>
+                            <td>${item.course_title}</td>
+                            <td>${item.credit_hour}</td>
+                            <td>${item.semester}</td>
+                            <td>${item.batch_no}</td>
+                            <td>${item.department_name}</td>`
+        return trElement
+    }
+</script>
 </body>
 
 </html>

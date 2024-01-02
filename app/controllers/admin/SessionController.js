@@ -86,6 +86,20 @@ const getCourses = async (req, res) => {
     }
 };
 
+getStudents = async (req, res) => {
+    const { sessionId } = req.params
+    try {
+        const response = await SessionService.getStudents(sessionId);
+        return res.send(response);
+    } catch (error) {
+        return res.send({
+            success: false,
+            message: 'Failed to retrieve',
+            data: null
+        })
+    }
+}
+
 module.exports = {
     index,
     create,
@@ -93,5 +107,6 @@ module.exports = {
     edit,
     update,
     destroy,
-    getCourses
+    getCourses,
+    getStudents
 }

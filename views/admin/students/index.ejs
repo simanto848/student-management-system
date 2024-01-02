@@ -51,7 +51,7 @@ j<!DOCTYPE html>
                                         <label for="select" class=" form-control-label">Select Session</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <select onchange="getCoursesBySession(this)"  id="session_id" class="form-control">
+                                        <select onchange="getStudentsBySession(this)"  id="session_id" class="form-control">
                                             <option>Please select batch</option>
                                             <% for (let session of sessions) { %>
                                                 <option value="<%= session.id %>"><%= session.session %> <%= session.semester %></option>
@@ -63,11 +63,14 @@ j<!DOCTYPE html>
                                     <table class="table table-data2">
                                         <thead>
                                             <tr>
-                                                <th>SL</th>
-                                                <th>Course Code</th>
-                                                <th>Course Title</th>
-                                                <th>Credit Hour</th>
-                                                <th>Assigned Teacher</th>
+                                                <th>Roll No</th>
+                                                <th>Name</th>
+                                                <th>Registration No</th>
+                                                <th>Phone No</th>
+                                                <th>Email</th>
+                                                <th>Course Fee</th>
+                                                <th>Department Name</th>
+                                                <th>Session</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -91,16 +94,16 @@ j<!DOCTYPE html>
     <%- include ('../../common/js.ejs')  %>
     <!-- SCRIPT END -->
 
-    <!-- <script>
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Select all delete buttons by class
-            const deleteButtons = document.querySelectorAll(".delete-course-btn");
+            const deleteButtons = document.querySelectorAll(".delete-student-btn");
 
             // Add a click event listener to each delete button
             deleteButtons.forEach(button => {
                 button.addEventListener("click", async function () {
                     // Get the faculty ID from the button's data-faculty-id attribute
-                    const courseId = button.getAttribute("data-course-id");
+                    const studentId = button.getAttribute("data-student-id");
 
                     // Show SweetAlert confirmation
                     const result = await swal("Are you sure you want to delete this?", {
@@ -110,49 +113,53 @@ j<!DOCTYPE html>
                     // If the user clicks "OK" in the SweetAlert confirmation
                     if (result) {
                         // Perform the deletion by redirecting to the delete route
-                        window.location.href = `/admin/courses/delete/${courseId}`;
+                        window.location.href = `/admin/students/delete/${studentId}`;
                     }
                 });
             });
         });
 
-        async function getCoursesBySession(e) {
+        async function getStudentsBySession(e) {
             const tableContainer = document.getElementById('table_body_container');
             tableContainer.innerHTML = null;
-            const response = await fetch(`/admin/sessions/${e.value}/courses`);
+            const response = await fetch(`/admin/sessions/${e.value}/students`);
             const { success, message, data } = await response.json();
             if(!success) {
                 alert(message)
             } else {
-                data.forEach((item, index) => {
-                    const trElement = appendTableRow(index, item);
+                data.forEach((item) => {
+                    const trElement = appendTableRow(item);
                     tableContainer.appendChild(trElement);
                 });
             }
         }
 
-        function appendTableRow(index, item) {
+        function appendTableRow(item) {
             var trElement = document.createElement('tr');
-            trElement.innerHTML = `<td>${index + 1}</td>
-                                <td>${item.course_code}</td>
-                                <td>${item.course_title}</td>
-                                <td>${item.credit_hour}</td>
-                                <td>${item.teacher_name !== null && item.teacher_name !== undefined && item.teacher_name !== '' ? item.teacher_name : 'Not Assigned'}</td>
+            trElement.innerHTML = `
+                                <td>${item.roll_no}</td>
+                                <td>${item.name}</td>
+                                <td>${item.registration_no}</td>
+                                <td>${item.phone_no}</td>
+                                <td>${item.email}</td>
+                                <td>${item.course_fee}</td>
+                                <td>${item.department_name}</td>
+                                <td>${item.session}</td>
                                 <td>
                                     <div class="table-data-feature">
-                                        <a href="/admin/courses/edit/${item.id}">
+                                        <a href="/admin/students/edit/${item.id}">
                                             <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                 <i class="zmdi zmdi-edit"></i>
                                             </button>
                                         </a>
-                                        <button class="item ml-2 delete-course-btn" data-toggle="tooltip" data-placement="top" title="Delete" data-course-id="${item.id}">
+                                        <button class="item ml-2 delete-student-btn" data-toggle="tooltip" data-placement="top" title="Delete" data-student-id="${item.id}">
                                             <i class="zmdi zmdi-delete"></i>
                                         </button>
                                     </div>
                                 </td>`
             return trElement
         }
-    </script> -->
+    </script>
 
 </body>
 
