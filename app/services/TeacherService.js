@@ -44,7 +44,7 @@ const destroy = async (id) => {
 
 const getCourses = async (teacher_id) => {
     return new Promise((resolve, reject) => {
-        db.query(`SELECT courses.id AS course_id, courses.code AS course_code, courses.title AS course_title, courses.credit_hour, courses.semester, departments.short_name AS department_name, sessions.batch_no FROM session_courses INNER JOIN teachers ON session_courses.teacher_id = teachers.id INNER JOIN courses ON session_courses.course_id = courses.id INNER JOIN departments ON courses.department_id = departments.id INNER JOIN sessions ON session_courses.session_id = sessions.id WHERE session_courses.teacher_id = ?`, teacher_id, (err, result) =>{
+        db.query(`SELECT courses.id AS course_id, courses.code AS course_code, courses.title AS course_title, courses.credit_hour, courses.semester, departments.short_name AS department_name, sessions.batch_no, sessions.id AS session_id FROM session_courses INNER JOIN teachers ON session_courses.teacher_id = teachers.id INNER JOIN courses ON session_courses.course_id = courses.id INNER JOIN departments ON courses.department_id = departments.id INNER JOIN sessions ON session_courses.session_id = sessions.id WHERE session_courses.teacher_id = ?`, teacher_id, (err, result) =>{
             if (err) {
                 reject(error(err));
             } else {

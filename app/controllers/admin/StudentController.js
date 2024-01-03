@@ -77,11 +77,26 @@ const destroy = async (req, res) => {
     }
 }
 
+const getStudentInfo = async (req, res) => {
+    try {
+        const { regNo } = req.params
+        const response = await StudentService.getStudentInfo(regNo);
+        return res.send(response);
+    } catch (error) {
+        return res.send({
+            success: false,
+            message: 'No Record Found!',
+            data: null
+        });
+    }
+}
+
 module.exports = {
     index,
     create,
     store,
     edit,
     update,
-    destroy
+    destroy,
+    getStudentInfo
 }

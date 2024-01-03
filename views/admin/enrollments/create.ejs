@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Add Fee</title>
+    <!-- CSS -->
+    <%- include ('../../common/css.ejs') %>
+    <!-- END CSS -->
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- HEADER MOBILE-->
+        <%- include ('../../common/header_mobile.ejs') %>
+        <!-- END HEADER MOBILE-->
+
+        <!-- MENU SIDEBAR-->
+        <%- include ('../../common/sidebar.ejs') %>
+        <!-- END MENU SIDEBAR-->
+
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            <%- include ('../../common/header_desktop.ejs') %>
+            <!-- HEADER DESKTOP-->
+
+            <!-- MAIN CONTENT-->
+            <div class="main-content">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">Teacher</div>
+                                    <div class="card-body">
+                                        <% if (alertMessage && alertMessage.length) { %>
+                                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                                <strong><%= alertMessage %></strong>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                        <% } %>
+                                        <div class="card-title">
+                                            <h3 class="text-center title-2">Manage Fees</h3>
+                                        </div>
+                                        <hr>
+                                        <form action="#" method="post" novalidate="novalidate">
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="semester" class=" form-control-label">Select Semester</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select name="semester" id="semester" class="form-control">
+                                                            <option>Please select semester</option>
+                                                            <% for (let semester of semesters) { %>
+                                                                <option class="text-uppercase" value="<%= semester.value %>"><%= semester.title %></option>
+                                                            <% } %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group has-success">
+                                                <label for="registration_no" class="control-label mb-1">Registration No</label>
+                                                <input id="registration_no" name="registration_no" type="text" class="form-control valid" placeholder="Student registration no...">
+                                            </div>
+                                            <div class="form-group has-success">
+                                                <label for="pay_amount" class="control-label mb-1">Amount</label>
+                                                <input id="pay_amount" name="pay_amount" type="text" class="form-control valid">
+                                            </div>
+                                            <div class="form-group has-success">
+                                                <label for="due_amount" class="control-label mb-1">Total Due</label>
+                                                <input id="due_amount" name="due_amount" type="text" class="form-control valid">
+                                            </div>
+                                            <div class="form-group has-success">
+                                                <label for="waiver" class="control-label mb-1">Waiver</label>
+                                                <input id="waiver" name="waiver" type="text" class="form-control valid">
+                                            </div>
+                                            <div>
+                                                <button id="button" type="submit" class="btn btn-lg btn-info btn-block">ADD</button>
+                                            </div>
+                                        </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer -->
+                <%- include ('../../common/footer.ejs') %>
+                <!-- FOOTER END -->
+            </div>
+        </div>
+    </div>
+<!-- SCRIPT -->
+<%- include ('../../common/js.ejs')  %>
+<!-- SCRIPT END -->
+
+</body>
+</html>
+<!-- end document-->
